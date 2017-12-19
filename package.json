@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/pankajpatel/stunning-broccoli/issues"
   },
-  "homepage": "https://github.com/pankajpatel/stunning-broccoli#readme"
+  "homepage": "https://github.com/pankajpatel/stunning-broccoli#readme",
+  "dependencies": {
+    "mz": "^2.7.0"
+  }
 }

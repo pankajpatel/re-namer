@@ -15,7 +15,7 @@ let errors = [];
 fs.readdir(p, (err, files) => {
 	let promises = files.map(file => {
 		let oldPath = `${p}/${file}`;
-		let newPath = `${p}/${file.replace(search, replace)}`;
+		let newPath = `${p}/${file.replace(new RegExp(search), replace)}`;
 		// return fsp.stat(oldPath).then((e, status) => {
 		return fsp.rename(oldPath, newPath).then((e) => {
 			return {
@@ -28,5 +28,4 @@ fs.readdir(p, (err, files) => {
 		fs.writeFileSync(logFileName, JSON.stringify(values), 'utf8');
 		console.log('Done');
 	})
-})
-
+});
