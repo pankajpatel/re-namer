@@ -1,31 +1,65 @@
-const path = require('path');
 const fs = require('fs');
-const fsp = require('mz/fs')
+const path = require('path');
+var program = require('commander');
+var glob = require("glob");
 
-const p = process.argv[2] || process.cwd();
-const search = process.argv[3] || '';
-const replace = process.argv[4] || '';
-const logFileName = process.argv[5] || `${process.cwd()}/rename.log`;
+const pack = require('./package.json')
 
-console.log(p, process.argv);
-console.log(`logs will be stored in ${logFileName}`);
-let log = [];
-let errors = [];
+program
+  .version(pack.version)
+  .option('-d, --dir <dir>', 'Directory to work on')
+  .option('-i, --input-pattern <files>', 'Directory to work on')
+  .option('-s, --search <search>', 'Search for the pattern in file name')
+  .option('-r, --replace <replace>', 'replace with')
+  .option('-l, --log <log>', 'replace with')
+  .option('-dr, --dry-run', 'replace with')
+  .parse(process.argv);
+ 
+console.log(`logs will be stored in ${program.log}`);
 
-fs.readdir(p, (err, files) => {
-	let promises = files.map(file => {
-		let oldPath = `${p}/${file}`;
-		let newPath = `${p}/${file.replace(new RegExp(search), replace)}`;
-		// return fsp.stat(oldPath).then((e, status) => {
-		return fsp.rename(oldPath, newPath).then((e) => {
-			return {
-				status: e ? 'failed' : 'success', 
-				path: oldPath
-			}
+const renamer = (oldPath, newPath) => new Promise(
+	(resolve, reject) => {
+		const response = { oldPath, newPath, status: false };
+		fs.rename(oldPath, newPath, (err) => {
+			if (err) reject(response);
+			else resolve(Object.assign({}, response, { status: true }));
 		});
 	});
-	Promise.all(promises).then((values) => {
-		fs.writeFileSync(logFileName, JSON.stringify(values), 'utf8');
-		console.log('Done');
+
+const stringify = d => JSON.stringify(d, null, 2);
+
+const writeLog = d => fs.writeFileSync(program.log, stringify(d), 'utf8');
+
+const NewRename = (dir, files, search, replace) => {
+	console.log('PARAMS:');
+	console.log('Dir:', dir);
+	console.log('Files:', files);
+	console.log('Search:', search);
+	console.log('Replace:', replace);
+	console.log('-----------------------')
+ 
+	// options is optional
+	glob(files, { cwd: dir }, function (er, files) {
+		if (er) {
+			console.log(er);
+			return;
+		}
+		const promises = files.map(file => {
+			const filePath = file.split(path.sep);
+			const fileName = filePath.pop().replace(new RegExp(search), replace);
+			const newName = path.join(dir, filePath.join(path.sep), fileName);
+
+			console.log(file , ' -> ', newName);
+
+			return renamer(path.join(dir, file), newName);
+		})
+
+		Promise
+			.all(promises)
+			.then(writeLog)
+			.then(() => console.log('Done'));
 	})
-});
+}
+
+const { dir, inputPattern, search, replace } = program;
+NewRename(dir, inputPattern, search, replace);

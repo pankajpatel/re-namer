@@ -1,22 +1,20 @@
 {
-  "name": "stunning-broccoli",
-  "version": "1.0.0",
+  "name": "re-namer",
+  "version": "1.1.0",
   "description": "Renames the files in a directory",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pankajpatel/stunning-broccoli.git"
+    "url": "git+https://github.com/pankajpatel/re-namer.git"
   },
-  "author": "Pankaj Patel <patel.pankaj@live.in> (http://pankaj.pro)",
+  "author": "Pankaj Patel <patel@time2hack.com> (https://time2hack.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pankajpatel/stunning-broccoli/issues"
+    "url": "https://github.com/pankajpatel/re-namer/issues"
   },
-  "homepage": "https://github.com/pankajpatel/stunning-broccoli#readme",
+  "homepage": "https://github.com/pankajpatel/re-namer#readme",
   "dependencies": {
-    "mz": "^2.7.0"
+    "commander": "^2.20.0",
+    "glob": "^7.1.4"
   }
 }
