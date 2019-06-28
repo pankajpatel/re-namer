@@ -1,5 +1,5 @@
 {
-  "name": "re-namer",
+  "name": "file-names-renamer",
   "version": "1.1.0",
   "description": "Renames the files in a directory",
   "main": "index.js",
