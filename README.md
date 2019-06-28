@@ -1,4 +1,4 @@
-# stunning-broccoli
+# file-names-renamer
 Renames the files
 
 # Usage
@@ -16,7 +16,7 @@ To remove last digits with hyphen(-) in file names
 ```
 
 ```sh
-node index.js ~/Desktop/Files "\-\d{1,}\." "."
+file-names-renamer -d ./testing -s \(\\d.\) -r file\-\$1 -l ./rename.log -i \*.*
 ```
 
 The above command will generate following renaming effect on files
@@ -33,6 +33,9 @@ The above command will generate following renaming effect on files
 
 # Parameters
 
-1. Source Directory i.e. __`~/Desktop/Files`__
-2. Search RegExp Parameter i.e. __`"\-\d{1,}\."`__
-3. Replace String i.e. __`"."`__
+1. `-d, --dir <dir>`: Directory to work on
+2. `-i, --input-pattern <files>`: Directory to work on
+3. `-s, --search <search>`: Search for the pattern in file name
+4. `-r, --replace <replace>`: replace with
+5. `-l, --log <log>`: replace with
+6. `-dr, --dry-run`: replace with
