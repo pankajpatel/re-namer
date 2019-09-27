@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/pankajpatel/re-namer#readme",
   "dependencies": {
-    "commander": "^2.20.0",
+    "commander": "^3.0.2",
     "glob": "^7.1.4"
   }
 }
